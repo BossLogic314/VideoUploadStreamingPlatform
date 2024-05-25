@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import uploadRouter from "./routes/upload.js";
+import uploadRouter from "./routes/upload.js"
 
 const app = express();
 const PORT = 8082;

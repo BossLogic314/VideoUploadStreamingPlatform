@@ -9,6 +9,6 @@ const jsonParser = bodyParser.json();
 
 router.post('/createMultipartUpload', jsonParser, createMultipartUpload);
 router.post('/uploadChunk', jsonParser, upload.single('chunk'), uploadChunk);
-router.post('/completeMultipartUpload', jsonParser, completeMultipartUpload);
+router.post('/completeMultipartUpload', jsonParser, upload.single('chunk'), completeMultipartUpload);
 
 export default router;
