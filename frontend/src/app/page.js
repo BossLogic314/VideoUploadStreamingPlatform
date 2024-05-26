@@ -4,6 +4,9 @@ import axios from "axios";
 
 export default function Home() {
 
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [author, setAuthor] = useState('');
   const [videoToUpload, setVideoToUpload] = useState(null);
 
   let uploadButtonClicked = ((event) => {
@@ -54,7 +57,10 @@ export default function Home() {
       {
         filename: filename,
         uploadId: uploadId,
-        uploadedParts: uploadedParts
+        uploadedParts: uploadedParts,
+        title: title,
+        description: description,
+        author: author
       }
       );
     }
@@ -85,10 +91,19 @@ export default function Home() {
   });
 
   return (
-    <div className="h-screen w-screen bg-blue-100">
-      <input id="videoInput" type="file" accept="video/mp4" onChange={videoToUploadSelected} hidden></input>
+    <div className="h-screen w-screen bg-blue-100 flex justify-center items-center">
 
-      <button className="uploadVideoButton bg-green-400" onClick={uploadButtonClicked}>Upload</button>
+      <div className="flex flex-col">
+
+        <input className="title mt-[5px]" id="title" onChange={(event) => setTitle(event.target.value)} value={title}></input>
+        <input className="description mt-[5px]" id="description" onChange={(event) => setDescription(event.target.value)} value={description}></input>
+        <input className="author mt-[5px]" id="author" value={author} onChange={(event) => setAuthor(event.target.value)}></input>
+
+        <input id="videoInput" type="file" accept="video/mp4" onChange={videoToUploadSelected} hidden></input>
+        <button className="uploadVideoButton bg-green-400" onClick={uploadButtonClicked}>Upload</button>
+
+      </div>
+
     </div>
   );
 }

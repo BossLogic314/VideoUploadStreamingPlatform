@@ -62,6 +62,9 @@ export let completeMultipartUpload = (async (req, res) => {
     const filename = req.body.filename;
     const uploadId = req.body.uploadId;
     const uploadedParts = req.body.uploadedParts;
+    const title = req.body.title;
+    const description = req.body.description;
+    const author = req.body.author;
 
     const s3 = new AWS.S3();
 
@@ -80,7 +83,7 @@ export let completeMultipartUpload = (async (req, res) => {
         const videoUrl = response.Location;
 
         // Saving the uploaded video's information in the DB
-        uploadVideoInfoToDb("title", "description", "Anish", videoUrl);
+        uploadVideoInfoToDb(title, description, author, videoUrl);
 
         console.log('File uploaded successfully');
     }
