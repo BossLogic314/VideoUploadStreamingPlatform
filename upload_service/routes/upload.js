@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import multer from "multer";
-import { createMultipartUpload, uploadChunk, completeMultipartUpload } from "../controllers/upload.js";
+import { createMultipartUpload, uploadChunk, completeMultipartUpload } from "../controller/upload.js";
 
 const upload = multer();
 const router = express.Router();
