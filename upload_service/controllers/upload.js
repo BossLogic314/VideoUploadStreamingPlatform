@@ -1,6 +1,8 @@
 import AWS from 'aws-sdk';
 import dotenv from "dotenv";
+import {PrismaClient} from '@prisma/client';
 
+const prisma = new PrismaClient();
 dotenv.config();
 
 AWS.config.update({
@@ -71,14 +73,30 @@ export let completeMultipartUpload = (async (req, res) => {
             Parts: uploadedParts
         }
     };
-    console.log(uploadedParts);
 
     try {
         const response = await s3.completeMultipartUpload(completeMultipartUploadParams).promise();
-        console.log('File uploaded successfully!');
-        res.status(200).json({message: 'File uploaded successfully!'});
+
+        const videoUrl = response.Location;
+
+        // Saving the uploaded video's information in the DB
+        uploadVideoInfoToDb("title", "description", "Anish", videoUrl);
+
+        console.log('File uploaded successfully');
     }
     catch(error) {
         res.status(500).json({message: error});
     }
 });
+
+export let uploadVideoInfoToDb = async (title, description, author, url) => {
+
+    await prisma.Videos.create({
+        data: {
+            title: title,
+            description: description,
+            author: author,
+            url: url
+        }
+    });
+}
