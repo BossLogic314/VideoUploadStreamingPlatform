@@ -25,14 +25,23 @@ export default function Watch() {
     console.log(videos);
     return (
         <div className="home h-screen w-screen overflow-y-scroll">
-            <div className="videos border-black border-[2px]">
+            <div className="navBar h-[70px] w-full border-red-400 border-[1px] flex flex-row items-center">
+                <div className="homeDiv w-[25%] flex font-[550]">
+                    <div className="homeText text-[30px] ml-[10px]">Home</div>
+                </div>
+                <input className="searchBox h-[40px] w-[50%] min-w-[500px] pl-[3px] text-[20px] border-black border-[1px]"
+                    type="text" placeholder="Search here">
+                </input>
+            </div>
+            <div className="videos flex align-center justify-center flex-wrap border-black border-[2px]">
                 {
                     videos == null ? <></> :
                     (
                         videos.map((element) => (
-                            <div className="videoDiv w-[360px] mt-[10px] ml-[10px] border-black border-[1px] inline-block" key={element.id}>
+                            <div className="videoDiv w-[380px] mt-[10px] ml-[40px] border-black border-[1px] inline-block"
+                            key={element.id}>
                                 <ReactPlayer
-                                    url={element.url} width="360px" height="180px" controls={true}
+                                    url={element.url} width="380px" height="200px" controls={true}
                                 />
 
                                 <div className="title font-[700] text-[25px] ml-[4px]">{element.title}</div>
