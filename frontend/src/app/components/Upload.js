@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
+import './styles/Upload.css';
 
-export default function Home() {
+export default function Upload() {
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -90,8 +91,14 @@ export default function Home() {
     await completeMultipartUpload(file.name, uploadId, uploadedParts);
   });
 
+  const uploadPopUpOverlayClicked = (event) => {
+    console.log(event.target.id);
+  }
+
   return (
-    <div className="h-screen w-screen bg-blue-100 flex justify-center items-center">
+    <div className="h-screen w-screen flex justify-center items-center fixed top-0 border-black border-[2px]"
+    id="uploadPopUpOverlay"
+    onClick={uploadPopUpOverlayClicked}>
 
       <div className="flex flex-col">
 

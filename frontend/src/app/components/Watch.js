@@ -1,14 +1,24 @@
+"use client";
 import { useEffect, useState } from "react";
+import { useSession, signIn } from "next-auth/react";
 import axios from "axios";
 import ReactPlayer from 'react-player';
+import Upload from "./Upload";
 import './styles/Watch.css';
 
 export default function Watch() {
 
+    const {data, status} = useSession();
     const [videos, setVideos] = useState();
+    const [userSignedIn, setUserSignedIn] = useState(false);
+    const [showUploadPopUp, setShowUploadPopUp] = useState(false);
 
     useEffect(() => {
         
+        if (status == 'authenticated') {
+            setUserSignedIn(true);
+        }
+
         const getVideos = async() => {
             try {
                 const response = await axios.get('http://localhost:8083/watch/getAllVideos');
@@ -20,18 +30,50 @@ export default function Watch() {
             }
         }
         getVideos();
-    }, []);
+    }, [data]);
 
-    console.log(videos);
+    const uploadButtonClicked = () => {
+
+        // If the user is not signed in
+        if (!userSignedIn) {
+            signIn('google');
+        }
+        else {
+            setShowUploadPopUp(true);
+        }
+    }
+
+    const signInClicked = () => {
+        signIn('google');
+    }
+
     return (
-        <div className="home h-screen w-screen overflow-y-scroll">
-            <div className="navBar h-[70px] w-full border-red-400 border-[1px] flex flex-row items-center">
-                <div className="homeDiv w-[25%] flex font-[550]">
-                    <div className="homeText text-[30px] ml-[10px]">Home</div>
+        <div className="home h-screen w-screen min-w-[550px] overflow-y-scroll">
+            <div className="navBar h-[75px] w-full border-red-400 border-[1px] flex flex-row justify-center items-center">
+                <div className="homeDiv w-[20%] flex justify-center font-[550]">
+                    <button className="uploadButton text-white bg-green-700 hover:bg-green-600 font-medium rounded-lg text-[18px] px-5 py-2.5 hover:scale-[1.04] active:scale-[1]"
+                    onClick={uploadButtonClicked}>
+                        Upload
+                    </button>
                 </div>
-                <input className="searchBox h-[40px] w-[50%] min-w-[500px] pl-[3px] text-[20px] border-black border-[1px]"
+                <input className="searchBox h-[45px] w-[60%] pl-[5px] text-[20px] border-black border-[1px]"
                     type="text" placeholder="Search here">
                 </input>
+                {
+                    data == null ?
+                    <div className="w-[20%] flex justify-center">
+                        <a className="signInLink text-[20px] underline underline-offset-4 hover:scale-[1.05] hover:cursor-pointer active:scale-[1]"
+                        onClick={signInClicked}>
+                            Sign in
+                        </a>
+                    </div> :
+                    <div className="profile w-[20%] flex justify-center">
+                        <img
+                            className="displayPicture h-[55px] w-[55px] rounded-full hover:scale-[1.05] hover:cursor-pointer active:scale-[1]"
+                            src={data.user.image}>
+                        </img>
+                    </div>
+                }
             </div>
             <div className="videos flex align-center justify-center flex-wrap border-black border-[2px]">
                 {
@@ -52,6 +94,11 @@ export default function Watch() {
                     )
                 }
             </div>
+            {
+                showUploadPopUp ?
+                <Upload /> :
+                <></>
+            }
         </div>
     )
 }
