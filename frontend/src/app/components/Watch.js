@@ -4,6 +4,7 @@ import { useSession, signIn } from "next-auth/react";
 import axios from "axios";
 import ReactPlayer from 'react-player';
 import Upload from "./Upload";
+import { useUploadPopUpStore } from "../../../zustand/useUploadPopUpStore";
 import './styles/Watch.css';
 
 export default function Watch() {
@@ -11,7 +12,7 @@ export default function Watch() {
     const {data, status} = useSession();
     const [videos, setVideos] = useState();
     const [userSignedIn, setUserSignedIn] = useState(false);
-    const [showUploadPopUp, setShowUploadPopUp] = useState(false);
+    const {showUploadPopUp, setShowUploadPopUp} = useUploadPopUpStore();
 
     useEffect(() => {
         

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
+import { useUploadPopUpStore } from "../../../zustand/useUploadPopUpStore";
 import './styles/Upload.css';
 
 export default function Upload() {
@@ -9,6 +10,7 @@ export default function Upload() {
   const [description, setDescription] = useState('');
   const [author, setAuthor] = useState('');
   const [videoToUpload, setVideoToUpload] = useState(null);
+  const {setShowUploadPopUp} = useUploadPopUpStore();
 
   let uploadButtonClicked = ((event) => {
     document.getElementById('videoInput').click();
@@ -92,7 +94,9 @@ export default function Upload() {
   });
 
   const uploadPopUpOverlayClicked = (event) => {
-    console.log(event.target.id);
+    if (event.target.id == 'uploadPopUpOverlay') {
+      setShowUploadPopUp(false);
+    }
   }
 
   return (
