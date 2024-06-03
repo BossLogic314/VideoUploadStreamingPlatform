@@ -20,18 +20,6 @@ export default function Watch() {
         if (status == 'authenticated') {
             setUserSignedIn(true);
         }
-
-        const getVideos = async() => {
-            try {
-                const response = await axios.get('http://localhost:8083/watch/getAllVideos');
-                const videos = response.data.videos;
-                setVideos(videos);
-            }
-            catch(error) {
-                console.log(error);
-            }
-        }
-        getVideos();
     }, [data]);
 
     const uploadButtonClicked = () => {
@@ -42,6 +30,18 @@ export default function Watch() {
         }
         else {
             setShowUploadPopUp(true);
+        }
+    }
+
+    const searchButtonClicked = async() => {
+        const searchString = document.getElementById('searchBox').value;
+        try {
+            const response = await axios.get(`http://localhost:8083/watch/getVideos?searchString=${searchString}`);
+            const videos = response.data.response.body.hits.hits;
+            setVideos(videos);
+        }
+        catch(error) {
+            console.log(error);
         }
     }
 
@@ -64,7 +64,7 @@ export default function Watch() {
     }
 
     return (
-        <div className="home h-screen w-screen min-w-[550px] overflow-y-scroll"
+        <div className="home h-screen w-screen min-w-[600px] overflow-y-scroll"
         onClick={backgroundClicked}>
             <div className="navBar h-[75px] w-full flex flex-row justify-center items-center">
                 <div className="homeDiv w-[20%] flex justify-center font-[550]">
@@ -73,9 +73,16 @@ export default function Watch() {
                         Upload
                     </button>
                 </div>
-                <input className="searchBox h-[45px] w-[60%] rounded-[4px] pl-[5px] text-[20px] border-black border-[1px]"
-                    type="text" placeholder="Search here">
-                </input>
+                <div className="searchDiv w-[60%] flex flex-row">
+                    <input className="searchBox h-[45px] flex-1 rounded-[4px] pl-[5px] text-[20px] border-black border-[1px]"
+                    id="searchBox"
+                        type="text" placeholder="Search here">
+                    </input>
+                    <button className="searchButton w-[80px] rounded-[4px] ml-[2px] border-black border-[1px] hover:scale-[1.05] hover:cursor-pointer active:scale-[1]"
+                    onClick={searchButtonClicked}>
+                        Search
+                    </button>
+                </div>
                 {
                     data == null ?
                     <div className="w-[20%] flex justify-center">
@@ -103,14 +110,14 @@ export default function Watch() {
                     (
                         videos.map((element) => (
                             <div className="videoDiv w-[380px] mt-[13px] ml-[40px] border-black border-[1px] inline-block"
-                            key={element.id}>
+                            key={element._id}>
                                 <ReactPlayer
-                                    url={element.url} width="380px" height="200px" controls={true}
+                                    url={element._source.url} width="380px" height="200px" controls={true}
                                 />
 
-                                <div className="title font-[700] text-[25px] ml-[4px]">{element.title}</div>
-                                <div className="author font-[400] text-[18px] ml-[4px]">{element.author}</div>
-                                <div className="description font-[400] ml-[4px] text-[18px]">{element.description}</div>
+                                <div className="title font-[700] text-[25px] ml-[4px]">{element._source.title}</div>
+                                <div className="author font-[400] text-[18px] ml-[4px]">{element._source.author}</div>
+                                <div className="description font-[400] ml-[4px] text-[18px]">{element._source.description}</div>
                             </div>
                         ))
                     )
