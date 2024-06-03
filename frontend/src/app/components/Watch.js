@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import axios from "axios";
 import ReactPlayer from 'react-player';
 import Upload from "./Upload";
@@ -53,6 +53,10 @@ export default function Watch() {
 
     const signInClicked = () => {
         signIn('google');
+    }
+
+    const signOutButtonClicked = () => {
+        signOut();
     }
 
     const displayPictureClicked = () => {
@@ -116,10 +120,11 @@ export default function Watch() {
                 showProfileInformation ?
                 <div className="profileInformation absolute flex flex-col justify-center items-center ml-[50px] z-[2] top-[68px] right-[10%] rounded-[5px]"
                 id="profileInformation">
-                    <div className="username text-[22px] font-[500] mx-[4px]" id="username">{data.user.name}</div>
+                    <div className="username text-[22px] font-[500] mt-[1px] mx-[4px]" id="username">{data.user.name}</div>
                     <div className="emailId text-[18px] mx-[5px]" id="emailId">{data.user.email}</div>
                     <button className="signOutButton text-white bg-red-700 hover:bg-red-600 font-[450] rounded-[8px] text-[16px] mt-[5px] mb-[5px] px-[10px] py-[2px] hover:scale-[1.04] active:scale-[1]"
-                    id="signOutButton">
+                    id="signOutButton"
+                    onClick={signOutButtonClicked}>
                         Sign out
                     </button>
                 </div> :
