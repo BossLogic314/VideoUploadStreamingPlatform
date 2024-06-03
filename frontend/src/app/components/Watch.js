@@ -13,6 +13,7 @@ export default function Watch() {
     const [videos, setVideos] = useState();
     const [userSignedIn, setUserSignedIn] = useState(false);
     const {showUploadPopUp, setShowUploadPopUp} = useUploadPopUpStore();
+    const [showProfileInformation, setShowProfileInformation] = useState(false);
 
     useEffect(() => {
         
@@ -44,20 +45,31 @@ export default function Watch() {
         }
     }
 
+    const backgroundClicked = (event) => {
+        if (event.target.id == '') {
+            setShowProfileInformation(false);
+        }
+    }
+
     const signInClicked = () => {
         signIn('google');
     }
 
+    const displayPictureClicked = () => {
+        setShowProfileInformation(!showProfileInformation);
+    }
+
     return (
-        <div className="home h-screen w-screen min-w-[550px] overflow-y-scroll">
-            <div className="navBar h-[75px] w-full border-red-400 border-[1px] flex flex-row justify-center items-center">
+        <div className="home h-screen w-screen min-w-[550px] overflow-y-scroll"
+        onClick={backgroundClicked}>
+            <div className="navBar h-[75px] w-full flex flex-row justify-center items-center">
                 <div className="homeDiv w-[20%] flex justify-center font-[550]">
                     <button className="uploadButton text-white bg-green-700 hover:bg-green-600 font-medium rounded-lg text-[18px] px-5 py-2.5 hover:scale-[1.04] active:scale-[1]"
                     onClick={uploadButtonClicked}>
                         Upload
                     </button>
                 </div>
-                <input className="searchBox h-[45px] w-[60%] pl-[5px] text-[20px] border-black border-[1px]"
+                <input className="searchBox h-[45px] w-[60%] rounded-[4px] pl-[5px] text-[20px] border-black border-[1px]"
                     type="text" placeholder="Search here">
                 </input>
                 {
@@ -68,20 +80,25 @@ export default function Watch() {
                             Sign in
                         </a>
                     </div> :
-                    <div className="profile w-[20%] flex justify-center">
-                        <img
-                            className="displayPicture h-[55px] w-[55px] rounded-full hover:scale-[1.05] hover:cursor-pointer active:scale-[1]"
-                            src={data.user.image}>
-                        </img>
+                    <div className="profile h-[55px] w-[20%] flex flex-col">
+                        <div className="profilePictureDiv h-[100%] w-[100%] flex justify-center">
+                            <img
+                                className="displayPicture h-[55px] w-[55px] rounded-full hover:scale-[1.05] hover:cursor-pointer active:scale-[1]"
+                                id="displayPicture"
+                                src={data.user.image}
+                                onClick={displayPictureClicked}>
+                            </img>
+                        </div>
                     </div>
                 }
             </div>
-            <div className="videos flex align-center justify-center flex-wrap border-black border-[2px]">
+            <div className="blank w-[90%] ml-[5%] border-black border-t-[1px]"></div>
+            <div className="videos flex align-center justify-center flex-wrap">
                 {
                     videos == null ? <></> :
                     (
                         videos.map((element) => (
-                            <div className="videoDiv w-[380px] mt-[10px] ml-[40px] border-black border-[1px] inline-block"
+                            <div className="videoDiv w-[380px] mt-[13px] ml-[40px] border-black border-[1px] inline-block"
                             key={element.id}>
                                 <ReactPlayer
                                     url={element.url} width="380px" height="200px" controls={true}
@@ -95,6 +112,19 @@ export default function Watch() {
                     )
                 }
             </div>
+            {
+                showProfileInformation ?
+                <div className="profileInformation absolute flex flex-col justify-center items-center ml-[50px] z-[2] top-[68px] right-[10%] rounded-[5px]"
+                id="profileInformation">
+                    <div className="username text-[22px] font-[500] mx-[4px]" id="username">{data.user.name}</div>
+                    <div className="emailId text-[18px] mx-[5px]" id="emailId">{data.user.email}</div>
+                    <button className="signOutButton text-white bg-red-700 hover:bg-red-600 font-[450] rounded-[8px] text-[16px] mt-[5px] mb-[5px] px-[10px] py-[2px] hover:scale-[1.04] active:scale-[1]"
+                    id="signOutButton">
+                        Sign out
+                    </button>
+                </div> :
+                <></>
+            }
             {
                 showUploadPopUp ?
                 <Upload /> :
