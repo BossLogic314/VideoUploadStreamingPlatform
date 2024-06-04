@@ -4,7 +4,7 @@ export let getVideos = (async (req, res) => {
     try {
         const searchString = req.query.searchString;
         const response = await openSearchClient.search({
-            index: "video",
+            index: "videos",
             body: {
                 query: {
                     query_string: {

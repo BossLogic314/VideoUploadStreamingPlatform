@@ -81,6 +81,9 @@ export let completeMultipartUpload = (async (req, res) => {
 
         const videoUrl = response.Location;
 
+        // Adding video information to OpenSearch
+        uploadVideoInfoToOpenSearch(title, author, description, videoUrl);
+
         console.log('File uploaded successfully');
     }
     catch(error) {
@@ -101,7 +104,7 @@ const uploadVideoInfoToOpenSearch = (async (title, author, description, url) => 
     try {
         const response = await openSearchClient.index({
             id: 'demo',
-            index: 'video',
+            index: 'videos',
             body: document,
             refresh: true
         });
