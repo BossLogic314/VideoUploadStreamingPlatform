@@ -54,6 +54,7 @@ export default function Watch() {
             // If no videos are returned
             if (videos.length == 0) {
                 setShowNoMatchesFoundMessage(true);
+                setVideos([]);
                 return;
             }
 
