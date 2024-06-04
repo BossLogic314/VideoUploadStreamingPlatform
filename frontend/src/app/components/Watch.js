@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import axios from "axios";
 import ReactPlayer from 'react-player';
-import Upload from "./Upload";
 import { useUploadPopUpStore } from "../../../zustand/useUploadPopUpStore";
+import Upload from "./Upload";
+import TrySearchingMessage from "./TrySearchingMessage";
+import NoMatchesFoundMessage from "./NoMatchesFoundMessage";
 import './styles/Watch.css';
 
 export default function Watch() {
@@ -14,6 +16,8 @@ export default function Watch() {
     const [userSignedIn, setUserSignedIn] = useState(false);
     const {showUploadPopUp, setShowUploadPopUp} = useUploadPopUpStore();
     const [showProfileInformation, setShowProfileInformation] = useState(false);
+    const [showTrySearchingMessage, setShowTrySearchingMessage] = useState(true);
+    const [showNoMatchesFoundMessage, setShowNoMatchesFoundMessage] = useState(false);
 
     useEffect(() => {
         
@@ -34,10 +38,27 @@ export default function Watch() {
     }
 
     const searchButtonClicked = async() => {
+
         const searchString = document.getElementById('searchBox').value;
+        if (searchString == '') {
+            return;
+        }
+
+        // Not showing this message anymore
+        setShowTrySearchingMessage(false);
+
         try {
             const response = await axios.get(`http://localhost:8083/watch/getVideos?searchString=${searchString}`);
             const videos = response.data.response.body.hits.hits;
+
+            // If no videos are returned
+            if (videos.length == 0) {
+                setShowNoMatchesFoundMessage(true);
+                return;
+            }
+
+            // When at least 1 video is returned
+            setShowNoMatchesFoundMessage(false);
             setVideos(videos);
         }
         catch(error) {
@@ -104,6 +125,16 @@ export default function Watch() {
                 }
             </div>
             <div className="blank w-[90%] ml-[5%] border-black border-t-[1px]"></div>
+            {
+                showTrySearchingMessage ?
+                <TrySearchingMessage /> :
+                <></>
+            }
+            {
+                showNoMatchesFoundMessage ?
+                <NoMatchesFoundMessage /> :
+                <></>
+            }
             <div className="videos flex align-center justify-center flex-wrap">
                 {
                     videos == null ? <></> :
@@ -125,7 +156,7 @@ export default function Watch() {
             </div>
             {
                 showProfileInformation ?
-                <div className="profileInformation absolute flex flex-col justify-center items-center ml-[50px] z-[2] top-[68px] right-[10%] rounded-[5px]"
+                <div className="profileInformation absolute flex flex-col justify-center items-center ml-[50px] z-[2] top-[68px] right-[10%] rounded-[8px] shadow-[2px_10px_28px_-16px]"
                 id="profileInformation">
                     <div className="username text-[22px] font-[500] mt-[3px] mx-[10px]" id="username">{data.user.name}</div>
                     <div className="emailId text-[18px] mx-[10px]" id="emailId">{data.user.email}</div>
