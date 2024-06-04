@@ -1,3 +1,20 @@
 #uploadPopUpOverlay {
     background-color: rgb(0, 0, 0, 0.7);
 }
+
+#chooseVideo {
+    background-color: rgb(170, 177, 184);
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #dedcdc; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: #949191; 
+    height: 10px;
+}

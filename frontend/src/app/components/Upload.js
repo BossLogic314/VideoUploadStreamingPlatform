@@ -4,17 +4,12 @@ import axios from "axios";
 import { useUploadPopUpStore } from "../../../zustand/useUploadPopUpStore";
 import './styles/Upload.css';
 
-export default function Upload() {
+export default function Upload({userData}) {
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [author, setAuthor] = useState('');
   const [videoToUpload, setVideoToUpload] = useState(null);
   const {setShowUploadPopUp} = useUploadPopUpStore();
-
-  let uploadButtonClicked = ((event) => {
-    document.getElementById('videoInput').click();
-  });
 
   let createMultipartUpload = (async(file) => {
     try {
@@ -63,7 +58,7 @@ export default function Upload() {
         uploadedParts: uploadedParts,
         title: title,
         description: description,
-        author: author
+        author: userData.user.name
       }
       );
     }
@@ -72,13 +67,18 @@ export default function Upload() {
     }
   });
 
-  let videoToUploadSelected = (async (event) => {
+  const videoToUploadSelected = (async (event) => {
     const files = event.target.files;
     if (files.length == 0) {
       return;
     }
 
-    const file = files[0];
+    const file = files[files.length - 1];
+    setVideoToUpload(file);
+  });
+
+  let submitButtonClicked = (async (event) => {
+    const file = videoToUpload;
 
     // Creating multipart upload
     const uploadId = await createMultipartUpload(file);
@@ -99,22 +99,66 @@ export default function Upload() {
     }
   }
 
+  const chooseVideoButtonClicked = (event) => {
+    document.getElementById('selectDisplayPictureTag').click();
+  }
+
   return (
-    <div className="h-screen w-screen flex justify-center items-center fixed top-0 border-black border-[2px]"
+    <div className="h-screen w-screen flex justify-center items-center fixed top-0"
     id="uploadPopUpOverlay"
     onClick={uploadPopUpOverlayClicked}>
+      <div className="flex flex-col items-center bg-white rounded-lg min-h-[350px] px-[30px] py-[10px]">
+        <div className="text-[37px] w-[400px] font-[500] text-center">Upload a video</div>
+        <div className="w-[400px] text-2xl font-[450]">Title</div>
+        <input className="title bg-gray-100 w-[400px] text-[18px] block mt-1 px-3 py-1 border-black border rounded"
+          placeholder="Enter your title here"
+          onChange={(event) => setTitle(event.target.value)}>
+        </input>
 
-      <div className="flex flex-col">
+        <div className="mt-2 w-[400px] text-2xl font-[450]">Description</div>
+        <textarea className="description bg-gray-100 h-[230px] w-[400px] text-[18px] block mt-1 px-3 py-1 break-words overflow-y-scroll border-black border rounded"
+          placeholder="Enter your description here"
+          onChange={(event) => setDescription(event.target.value)}>
+        </textarea>
 
-        <input className="title mt-[5px]" id="title" onChange={(event) => setTitle(event.target.value)} value={title}></input>
-        <input className="description mt-[5px]" id="description" onChange={(event) => setDescription(event.target.value)} value={description}></input>
-        <input className="author mt-[5px]" id="author" value={author} onChange={(event) => setAuthor(event.target.value)}></input>
+        <div className="selectVideoDiv flex flex-row justify-center items-center w-[90%] mt-[7px]">
+          <div className="chooseVideoDiv flex justify-end w-[50%]">
+            <button className="chooseVideo text-[17px] rounded-[4px] px-[5px] hover:scale-[1.04] active:scale-[1]"
+            id="chooseVideo"
+            onClick={chooseVideoButtonClicked}>
+              Select video
+            </button>
+          </div>
+          <div className="fileSelectedName flex items-center h-[30px] w-[50%] text-[17px] font-[400] ml-[4px] italic truncate ...">
+            {
+              videoToUpload == null ?
+              "No video selected" :
+              `${videoToUpload.name}`
+            }
+          </div>
+        </div>
 
-        <input id="videoInput" type="file" accept="video/mp4" onChange={videoToUploadSelected} hidden></input>
-        <button className="uploadVideoButton bg-green-400" onClick={uploadButtonClicked}>Upload</button>
+        <input hidden id="selectDisplayPictureTag" type="file" accept="video/mp4" onChange={videoToUploadSelected} />
 
+        <div className="submitDiv flex flex-row justify-center mt-[7px]">
+          {
+            title != '' && description != '' && videoToUpload != null ?
+            (
+              <button className="submitButton text-white bg-green-700 hover:bg-green-600 font-medium rounded-lg text-[17px] px-[15px] py-[8px] hover:scale-[1.04] active:scale-[1]"
+              id="submitButton"
+              onClick={submitButtonClicked}>
+                Submit
+              </button>
+            ) :
+            (
+              <button className="submitButton text-white bg-green-700 font-medium rounded-lg text-[17px] px-[15px] py-[8px]"
+              id="submitButton">
+                Submit
+              </button>
+            )
+          }
+        </div>
       </div>
-
     </div>
   );
 }

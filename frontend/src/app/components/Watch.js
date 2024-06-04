@@ -127,9 +127,9 @@ export default function Watch() {
                 showProfileInformation ?
                 <div className="profileInformation absolute flex flex-col justify-center items-center ml-[50px] z-[2] top-[68px] right-[10%] rounded-[5px]"
                 id="profileInformation">
-                    <div className="username text-[22px] font-[500] mt-[1px] mx-[4px]" id="username">{data.user.name}</div>
-                    <div className="emailId text-[18px] mx-[5px]" id="emailId">{data.user.email}</div>
-                    <button className="signOutButton text-white bg-red-700 hover:bg-red-600 font-[450] rounded-[8px] text-[16px] mt-[5px] mb-[5px] px-[10px] py-[2px] hover:scale-[1.04] active:scale-[1]"
+                    <div className="username text-[22px] font-[500] mt-[3px] mx-[10px]" id="username">{data.user.name}</div>
+                    <div className="emailId text-[18px] mx-[10px]" id="emailId">{data.user.email}</div>
+                    <button className="signOutButton text-white bg-red-700 hover:bg-red-600 font-[450] rounded-[8px] text-[16px] mt-[5px] mb-[8px] px-[10px] py-[2px] hover:scale-[1.04] active:scale-[1]"
                     id="signOutButton"
                     onClick={signOutButtonClicked}>
                         Sign out
@@ -139,7 +139,7 @@ export default function Watch() {
             }
             {
                 showUploadPopUp ?
-                <Upload /> :
+                <Upload userData={data}/> :
                 <></>
             }
         </div>
