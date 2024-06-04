@@ -4,9 +4,11 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import axios from "axios";
 import ReactPlayer from 'react-player';
 import { useUploadPopUpStore } from "../../../zustand/useUploadPopUpStore";
+import { useLoaderStore } from "../../../zustand/useLoaderStore";
 import Upload from "./Upload";
 import TrySearchingMessage from "./TrySearchingMessage";
 import NoMatchesFoundMessage from "./NoMatchesFoundMessage";
+import Loader from "./Loader";
 import './styles/Watch.css';
 
 export default function Watch() {
@@ -15,6 +17,7 @@ export default function Watch() {
     const [videos, setVideos] = useState();
     const [userSignedIn, setUserSignedIn] = useState(false);
     const {showUploadPopUp, setShowUploadPopUp} = useUploadPopUpStore();
+    const {showLoader} = useLoaderStore();
     const [showProfileInformation, setShowProfileInformation] = useState(false);
     const [showTrySearchingMessage, setShowTrySearchingMessage] = useState(true);
     const [showNoMatchesFoundMessage, setShowNoMatchesFoundMessage] = useState(false);
@@ -125,17 +128,9 @@ export default function Watch() {
                     </div>
                 }
             </div>
+
             <div className="blank w-[90%] ml-[5%] border-black border-t-[1px]"></div>
-            {
-                showTrySearchingMessage ?
-                <TrySearchingMessage /> :
-                <></>
-            }
-            {
-                showNoMatchesFoundMessage ?
-                <NoMatchesFoundMessage /> :
-                <></>
-            }
+
             <div className="videos flex align-center justify-center flex-wrap">
                 {
                     videos == null ? <></> :
@@ -170,8 +165,23 @@ export default function Watch() {
                 <></>
             }
             {
+                showTrySearchingMessage ?
+                <TrySearchingMessage /> :
+                <></>
+            }
+            {
+                showNoMatchesFoundMessage ?
+                <NoMatchesFoundMessage /> :
+                <></>
+            }
+            {
                 showUploadPopUp ?
                 <Upload userData={data}/> :
+                <></>
+            }
+            {
+                showLoader ?
+                <Loader/> :
                 <></>
             }
         </div>

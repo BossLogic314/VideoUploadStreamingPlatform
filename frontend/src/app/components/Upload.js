@@ -2,6 +2,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useUploadPopUpStore } from "../../../zustand/useUploadPopUpStore";
+import { useLoaderStore } from "../../../zustand/useLoaderStore";
 import './styles/Upload.css';
 
 export default function Upload({userData}) {
@@ -10,8 +11,12 @@ export default function Upload({userData}) {
   const [description, setDescription] = useState('');
   const [videoToUpload, setVideoToUpload] = useState(null);
   const {setShowUploadPopUp} = useUploadPopUpStore();
+  const {setShowLoader} = useLoaderStore();
 
   let createMultipartUpload = (async(file) => {
+
+    // Showing the 'loading' message to the user
+    setShowLoader(true);
     try {
       const response = await axios.post('http://localhost:8082/upload/createMultipartUpload',
       {
@@ -20,7 +25,8 @@ export default function Upload({userData}) {
       return response.data.uploadId;
     }
     catch(error) {
-      console.log(error);
+      setShowLoader(false);
+      alert('Could not upload the video. Please try again.');
     }
   });
 
@@ -43,7 +49,8 @@ export default function Upload({userData}) {
         uploadedParts.push({PartNumber: i + 1, ETag: eTag});
       }
       catch(error) {
-        console.log(error);
+        setShowLoader(false);
+        alert('Could not upload the video. Please try again.');
       }
     }
     return uploadedParts;
@@ -63,7 +70,8 @@ export default function Upload({userData}) {
       );
     }
     catch(error) {
-      console.log(error);
+      setShowLoader(false);
+      alert('Could not upload the video. Please try again.');
     }
   });
 
@@ -90,7 +98,12 @@ export default function Upload({userData}) {
     const uploadedParts = await uploadChunks(file, uploadId, chunkSize, totalChunks);
 
     // Completing multipart upload
-    await completeMultipartUpload(file.name, uploadId, uploadedParts);
+    completeMultipartUpload(file.name, uploadId, uploadedParts);
+
+    // Going back to the home page
+    setShowLoader(false);
+    setShowUploadPopUp(false);
+    alert('Video uploaded successfully!');
   });
 
   const uploadPopUpOverlayClicked = (event) => {
