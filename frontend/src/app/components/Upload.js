@@ -132,7 +132,7 @@ export default function Upload({userData}) {
         </input>
 
         <div className="mt-2 w-[400px] text-2xl font-[450]">Description</div>
-        <textarea className="description bg-gray-100 h-[230px] w-[400px] text-[18px] block mt-1 px-3 py-1 break-words overflow-y-scroll border-black border rounded"
+        <textarea className="description bg-gray-100 h-[230px] w-[400px] text-[18px] block mt-1 px-3 py-1 break-words overflow-y-auto border-black border rounded"
           placeholder="Enter your description here"
           onChange={(event) => setDescription(event.target.value)}>
         </textarea>

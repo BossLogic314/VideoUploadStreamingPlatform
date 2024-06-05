@@ -5,11 +5,13 @@ import axios from "axios";
 import ReactPlayer from 'react-player';
 import { useUploadPopUpStore } from "../../../zustand/useUploadPopUpStore";
 import { useLoaderStore } from "../../../zustand/useLoaderStore";
+import { useVideoInformationStore } from "../../../zustand/useVideoInformationStore";
 import Upload from "./Upload";
 import TrySearchingMessage from "./TrySearchingMessage";
 import NoMatchesFoundMessage from "./NoMatchesFoundMessage";
 import Loader from "./Loader";
 import './styles/Watch.css';
+import VideoInformation from "./VideoInformation";
 
 export default function Watch() {
 
@@ -18,6 +20,7 @@ export default function Watch() {
     const [userSignedIn, setUserSignedIn] = useState(false);
     const {showUploadPopUp, setShowUploadPopUp} = useUploadPopUpStore();
     const {showLoader} = useLoaderStore();
+    const {showVideoInformation, setVideoInformation} = useVideoInformationStore();
     const [showProfileInformation, setShowProfileInformation] = useState(false);
     const [showTrySearchingMessage, setShowTrySearchingMessage] = useState(true);
     const [showNoMatchesFoundMessage, setShowNoMatchesFoundMessage] = useState(false);
@@ -88,8 +91,15 @@ export default function Watch() {
         setShowProfileInformation(!showProfileInformation);
     }
 
+    const videoOptionsButtonClicked = (event) => {
+        const title = event.target.getAttribute('title');
+        const description = event.target.getAttribute('description');
+        const author = event.target.getAttribute('author');
+        setVideoInformation({newShowVideoInformationValue: true, newTitle: title, newDescription: description, newAuthor: author});
+    }
+
     return (
-        <div className="home h-screen w-screen min-w-[600px] overflow-y-scroll"
+        <div className="home h-screen w-screen min-w-[600px] overflow-y-auto"
         onClick={backgroundClicked}>
             <div className="navBar h-[75px] w-full flex flex-row justify-center items-center">
                 <div className="homeDiv w-[20%] flex justify-center font-[550]">
@@ -142,9 +152,18 @@ export default function Watch() {
                                     url={element._source.url} width="380px" height="200px" controls={true}
                                 />
 
-                                <div className="title font-[700] text-[25px] ml-[4px]">{element._source.title}</div>
-                                <div className="author font-[400] text-[18px] ml-[4px]">{element._source.author}</div>
-                                <div className="description font-[400] ml-[4px] text-[18px]">{element._source.description}</div>
+                                <div className="title font-[600] text-[25px] ml-[4px] truncate ...">{element._source.title}</div>
+                                <div className="description w-[90%] ml-[4px] text-[19px] font-[400] truncate ...">{element._source.description}</div>
+                                <div className="descriptionAndOptions flex flex-row mt-[3px] mb-[2px]">
+                                    <div className="author w-[92%] font-[550] text-[18px] ml-[4px] italic truncate ...">{element._source.author}</div>
+                                    <button className="optionsButton font-[400] text-[18px] pb-[2px] hover:scale-[1.3]"
+                                    title={element._source.title}
+                                    description={element._source.description}
+                                    author={element._source.author}
+                                    onClick={videoOptionsButtonClicked}>
+                                        ...
+                                    </button>
+                                </div>
                             </div>
                         ))
                     )
@@ -181,7 +200,12 @@ export default function Watch() {
             }
             {
                 showLoader ?
-                <Loader/> :
+                <Loader /> :
+                <></>
+            }
+            {
+                showVideoInformation ?
+                <VideoInformation /> :
                 <></>
             }
         </div>

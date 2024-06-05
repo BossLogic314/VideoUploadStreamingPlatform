@@ -1,0 +1,17 @@
+#videoInformationOverlay {
+    background-color: rgb(0, 0, 0, 0.7);
+}
+
+::-webkit-scrollbar {
+    height: 6px;
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #dedcdc;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #949191;
+    height: 10px;
+}
