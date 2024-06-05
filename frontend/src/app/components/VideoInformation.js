@@ -21,7 +21,7 @@ export default function VideoInformation() {
                     {title}
                 </div>
 
-                <div className="description bg-gray-100 max-h-[280px] text-[18px] block mt-[5px] px-[5px] py-[5px] break-words overflow-y-auto border-black border-[1px] rounded-[4px]"
+                <div className="description bg-gray-100 max-h-[280px] text-[18px] block mt-[5px] px-[10px] py-[5px] break-words overflow-y-auto border-black border-[1px] rounded-[4px]"
                 id="description">
                     {description}
                 </div>
