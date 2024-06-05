@@ -13,14 +13,14 @@ export default function Upload({userData}) {
   const {setShowUploadPopUp} = useUploadPopUpStore();
   const {setShowLoader} = useLoaderStore();
 
-  let createMultipartUpload = (async(file) => {
+  let createMultipartUpload = (async(file, filename) => {
 
     // Showing the 'loading' message to the user
     setShowLoader(true);
     try {
       const response = await axios.post('http://localhost:8082/upload/createMultipartUpload',
       {
-        filename: file.name
+        filename: filename
       });
       return response.data.uploadId;
     }
@@ -30,7 +30,7 @@ export default function Upload({userData}) {
     }
   });
 
-  let uploadChunks = (async(file, uploadId, chunkSize, totalChunks) => {
+  let uploadChunks = (async(file, filename, uploadId, chunkSize, totalChunks) => {
 
     let uploadedParts = [];
 
@@ -39,7 +39,7 @@ export default function Upload({userData}) {
       const chunk = file.slice(i, i + chunkSize);
       const formData = new FormData();
       formData.append('chunk', chunk);
-      formData.append('filename', file.name);
+      formData.append('filename', filename);
       formData.append('uploadId', uploadId);
       formData.append('chunkIndex', i + 1);
 
@@ -88,17 +88,20 @@ export default function Upload({userData}) {
   let submitButtonClicked = (async (event) => {
     const file = videoToUpload;
 
+    const currentDate = new Date().toISOString();
+    const filename = userData.user.email + "_" + file.name + "_" + currentDate;
+
     // Creating multipart upload
-    const uploadId = await createMultipartUpload(file);
+    const uploadId = await createMultipartUpload(file, filename);
 
     const chunkSize = 5 * 1024 * 1024; // 5 MB
     const totalChunks = Math.ceil(file.size / chunkSize);
 
     // Uploading chunks
-    const uploadedParts = await uploadChunks(file, uploadId, chunkSize, totalChunks);
+    const uploadedParts = await uploadChunks(file, filename, uploadId, chunkSize, totalChunks);
 
     // Completing multipart upload
-    completeMultipartUpload(file.name, uploadId, uploadedParts);
+    completeMultipartUpload(filename, uploadId, uploadedParts);
 
     // Going back to the home page
     setShowLoader(false);
