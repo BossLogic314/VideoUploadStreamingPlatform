@@ -158,10 +158,30 @@ export default function Watch() {
                                     url={element._source.url} width="380px" height="200px" controls={true}
                                 />
 
-                                <div className="title font-[600] text-[25px] ml-[4px] truncate ...">{element._source.title}</div>
-                                <div className="description w-[90%] ml-[4px] text-[19px] font-[400] truncate ...">{element._source.description}</div>
+                                {
+                                    data != null && data.email == element.email ?
+                                    (
+                                        <div className="flex flex-row">
+                                            <div className="title w-[90%] font-[600] text-[25px] ml-[4px] truncate ...">
+                                                {element._source.title}
+                                            </div>
+                                            <div className="deleteVideoButton flex items-center justify-center w-[20px] hover:cursor-pointer">
+                                                <i className="fa-solid fa-trash fa-xl h-[30px] mt-[5px] pt-[12px] ml-[5px]"
+                                                    id="deleteVideoButton"></i>
+                                            </div>
+                                        </div>
+                                    ) :
+                                    <div className="title font-[600] text-[25px] ml-[4px] truncate ...">
+                                        {element._source.title}
+                                    </div>
+                                }
+                                <div className="description w-[90%] ml-[4px] text-[19px] font-[400] truncate ...">
+                                    {element._source.description}
+                                </div>
                                 <div className="descriptionAndOptions flex flex-row mt-[3px] mb-[2px]">
-                                    <div className="author w-[92%] font-[550] text-[18px] ml-[4px] italic truncate ...">{element._source.author}</div>
+                                    <div className="author w-[92%] font-[550] text-[18px] ml-[4px] italic truncate ...">
+                                        {element._source.author}
+                                    </div>
                                     <button className="optionsButton font-[400] text-[18px] pb-[2px] hover:scale-[1.3]"
                                     title={element._source.title}
                                     description={element._source.description}

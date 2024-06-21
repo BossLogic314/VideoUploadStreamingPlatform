@@ -9,3 +9,7 @@
 #searchButton:hover {
     background-color: rgb(226, 218, 214);
 }
+
+#deleteVideoButton:hover {
+    border-bottom: 3px solid rgb(230, 15, 15);
+}
