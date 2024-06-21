@@ -107,6 +107,7 @@ export default function Upload({userData}) {
     setShowLoader(false);
     setShowUploadPopUp(false);
     alert('Video uploaded successfully!');
+    window.location.reload();
   });
 
   const uploadPopUpOverlayClicked = (event) => {

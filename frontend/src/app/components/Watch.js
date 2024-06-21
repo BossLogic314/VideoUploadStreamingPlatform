@@ -11,6 +11,7 @@ import TrySearchingMessage from "./TrySearchingMessage";
 import NoMatchesFoundMessage from "./NoMatchesFoundMessage";
 import Loader from "./Loader";
 import VideoInformation from "./VideoInformation";
+import DeleteVideoWarning from "./DeleteVideoWarning";
 import './styles/Watch.css';
 
 export default function Watch() {
@@ -24,6 +25,8 @@ export default function Watch() {
     const [showProfileInformation, setShowProfileInformation] = useState(false);
     const [showTrySearchingMessage, setShowTrySearchingMessage] = useState(true);
     const [showNoMatchesFoundMessage, setShowNoMatchesFoundMessage] = useState(false);
+    const [showDeleteVideoWarning, setShowDeleteVideoWarning] = useState(false);
+    const [videoKeyToDelete, setVideoKeyToDelete] = useState(null);
 
     useEffect(() => {
         const script = document.createElement("script");
@@ -94,6 +97,12 @@ export default function Watch() {
 
     const displayPictureClicked = () => {
         setShowProfileInformation(!showProfileInformation);
+    }
+
+    const deleteVideoButtonClicked = (event) => {
+        const videoKey = event.target.getAttribute('video-key');
+        setVideoKeyToDelete(videoKey);
+        setShowDeleteVideoWarning(true);
     }
 
     const videoOptionsButtonClicked = (event) => {
@@ -167,7 +176,7 @@ export default function Watch() {
                                             </div>
                                             <div className="deleteVideoButton flex items-center justify-center w-[20px] hover:cursor-pointer">
                                                 <i className="fa-solid fa-trash fa-xl h-[30px] mt-[5px] pt-[12px] ml-[5px]"
-                                                    id="deleteVideoButton"></i>
+                                                    id="deleteVideoButton" onClick={deleteVideoButtonClicked} video-key={element._id}></i>
                                             </div>
                                         </div>
                                     ) :
@@ -232,6 +241,11 @@ export default function Watch() {
             {
                 showVideoInformation ?
                 <VideoInformation /> :
+                <></>
+            }
+            {
+                showDeleteVideoWarning ?
+                <DeleteVideoWarning videoKeyToDelete={videoKeyToDelete} setShowDeleteVideoWarning={setShowDeleteVideoWarning} /> :
                 <></>
             }
         </div>
