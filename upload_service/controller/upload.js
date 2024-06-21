@@ -82,7 +82,7 @@ export let completeMultipartUpload = (async (req, res) => {
         const videoUrl = response.Location;
 
         // Adding video information to OpenSearch
-        uploadVideoInfoToOpenSearch(title, author, description, videoUrl);
+        uploadVideoInfoToOpenSearch(filename, title, author, description, videoUrl);
 
         console.log('File uploaded successfully');
     }
@@ -91,7 +91,7 @@ export let completeMultipartUpload = (async (req, res) => {
     }
 });
 
-const uploadVideoInfoToOpenSearch = (async (title, author, description, url) => {
+const uploadVideoInfoToOpenSearch = (async (filename, title, author, description, url) => {
 
     // Creating document to upload to opensearch
     const document = {
@@ -103,10 +103,49 @@ const uploadVideoInfoToOpenSearch = (async (title, author, description, url) => 
 
     try {
         const response = await openSearchClient.index({
-            id: 'demo',
+            id: filename,
             index: 'videos',
             body: document,
             refresh: true
+        });
+        return true;
+    }
+    catch(error) {
+        return false;
+    }
+});
+
+export const deleteVideo = async(req, res) => {
+    const s3 = new AWS.S3();
+
+    const key = req.query.key;
+    const params = {
+        Bucket: 'video-upload-streaming-platform-videos-bucket',
+        Key: key
+    }
+    s3.deleteObject(params, (err, data) => {
+        if (err) {
+            res.status(500).json({message: "Server error!"});
+        }
+        else {
+            const status = deleteVideoInfoFromOpenSearch(key);
+
+            if (status) {
+                res.status(200).json({message: "Successfully deleted the video!"});
+            }
+            else {
+                res.status(500).json({message: "Server error!"});
+            }
+        }
+    });
+}
+
+const deleteVideoInfoFromOpenSearch = (async (id) => {
+
+    try {
+        const response = await openSearchClient.delete({
+            index: 'videos',
+            id: id
         });
         return true;
     }

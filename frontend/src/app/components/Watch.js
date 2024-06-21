@@ -10,8 +10,8 @@ import Upload from "./Upload";
 import TrySearchingMessage from "./TrySearchingMessage";
 import NoMatchesFoundMessage from "./NoMatchesFoundMessage";
 import Loader from "./Loader";
-import './styles/Watch.css';
 import VideoInformation from "./VideoInformation";
+import './styles/Watch.css';
 
 export default function Watch() {
 
@@ -26,7 +26,12 @@ export default function Watch() {
     const [showNoMatchesFoundMessage, setShowNoMatchesFoundMessage] = useState(false);
 
     useEffect(() => {
-        
+        const script = document.createElement("script");
+        script.src = "https://kit.fontawesome.com/13ecd81147.js";
+        script.async = true;
+    
+        document.body.appendChild(script);
+
         if (status == 'authenticated') {
             setUserSignedIn(true);
         }
@@ -108,15 +113,16 @@ export default function Watch() {
                         Upload
                     </button>
                 </div>
-                <div className="searchDiv w-[60%] flex flex-row">
-                    <input className="searchBox h-[45px] flex-1 rounded-[4px] pl-[5px] text-[20px] border-black border-[1px]"
+                <div className="searchDiv w-[50%] flex flex-row">
+                    <input className="searchBox h-[45px] flex-1 rounded-[4px] px-[10px] text-[20px] border-black border-[1px]"
                     id="searchBox"
                         type="text" placeholder="Search here">
                     </input>
-                    <button className="searchButton w-[80px] rounded-[4px] ml-[2px] border-black border-[1px] hover:scale-[1.05] hover:cursor-pointer active:scale-[1]"
-                    onClick={searchButtonClicked}>
-                        Search
-                    </button>
+                    <div className="searchButton flex justify-center w-[60px] rounded-[4px] ml-[5px] hover:cursor-pointer border-black border-[1px]"
+                        id="searchButton" onClick={searchButtonClicked}>
+                        <i className="fa-solid fa-magnifying-glass fa-xl h-[30px] w-[30px] mt-[7px] pt-[12px] pl-[2px]">
+                        </i>
+                    </div>
                 </div>
                 {
                     data == null ?

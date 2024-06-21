@@ -1,3 +1,11 @@
 #profileInformation {
     background-color: rgb(255, 225, 141);
 }
+
+#searchButton {
+    background-color: rgb(234, 229, 227);
+}
+
+#searchButton:hover {
+    background-color: rgb(226, 218, 214);
+}

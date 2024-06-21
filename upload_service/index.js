@@ -18,6 +18,7 @@ app.use(cors({
     origin: ["http://localhost:3000"]
 }));
 app.use('/upload', uploadRouter);
+app.use('/delete', uploadRouter);
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
