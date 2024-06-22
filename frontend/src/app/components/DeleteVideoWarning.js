@@ -26,7 +26,8 @@ export default function Upload({videoKeyToDelete, setShowDeleteVideoWarning}) {
             const response = await axios.post(`http://localhost:8082/delete/deleteVideo?key=${videoKeyToDelete}`);
             setShowLoader(false);
             alert('Video deleted successfully!');
-            window.location.reload();
+            // Rendering videos based on the search string again
+            document.getElementById('searchButton').click();
         }
         catch(error) {
             setShowLoader(false);

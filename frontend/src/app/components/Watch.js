@@ -113,9 +113,9 @@ export default function Watch() {
     }
 
     return (
-        <div className="home h-screen w-screen min-w-[600px] overflow-y-auto"
+        <div className="home h-screen w-screen flex flex-col min-w-[600px]"
         onClick={backgroundClicked}>
-            <div className="navBar h-[75px] w-full flex flex-row justify-center items-center">
+            <div className="navBar min-h-[75px] max-h-[75px] w-full flex flex-row justify-center items-center">
                 <div className="homeDiv w-[20%] flex justify-center font-[550]">
                     <button className="uploadButton text-white bg-green-700 hover:bg-green-600 font-medium rounded-lg text-[18px] px-5 py-2.5 hover:scale-[1.04] active:scale-[1]"
                     onClick={uploadButtonClicked}>
@@ -156,12 +156,12 @@ export default function Watch() {
 
             <div className="blank w-[90%] ml-[5%] border-black border-t-[1px]"></div>
 
-            <div className="videos flex align-center justify-center flex-wrap">
+            <div className="videos flex justify-center items-center flex-wrap overflow-y-auto">
                 {
                     videos == null ? <></> :
                     (
                         videos.map((element) => (
-                            <div className="videoDiv w-[380px] mt-[13px] ml-[40px] border-black border-[1px] inline-block"
+                            <div className="videoDiv w-[380px] mt-[15px] mb-[5px] ml-[40px] border-black border-[1px] inline-block"
                             key={element._id}>
                                 <ReactPlayer
                                     url={element._source.url} width="380px" height="200px" controls={true}

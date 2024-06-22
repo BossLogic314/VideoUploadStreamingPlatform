@@ -107,7 +107,8 @@ export default function Upload({userData}) {
     setShowLoader(false);
     setShowUploadPopUp(false);
     alert('Video uploaded successfully!');
-    window.location.reload();
+    // Rendering videos based on the search string again
+    document.getElementById('searchButton').click();
   });
 
   const uploadPopUpOverlayClicked = (event) => {
