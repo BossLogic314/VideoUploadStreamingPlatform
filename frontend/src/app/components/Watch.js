@@ -180,15 +180,15 @@ export default function Watch() {
                                             </div>
                                         </div>
                                     ) :
-                                    <div className="title font-[600] text-[25px] ml-[4px] truncate ...">
+                                    <div className="title font-[600] text-[25px] ml-[5px] truncate ...">
                                         {element._source.title}
                                     </div>
                                 }
-                                <div className="description w-[90%] ml-[4px] text-[19px] font-[400] truncate ...">
+                                <div className="description w-[90%] ml-[5px] text-[19px] font-[400] truncate ...">
                                     {element._source.description}
                                 </div>
                                 <div className="descriptionAndOptions flex flex-row mt-[3px] mb-[2px]">
-                                    <div className="author w-[92%] font-[550] text-[18px] ml-[4px] italic truncate ...">
+                                    <div className="author w-[92%] font-[550] text-[18px] ml-[5px] italic truncate ...">
                                         {element._source.author}
                                     </div>
                                     <button className="optionsButton font-[400] text-[18px] pb-[2px] hover:scale-[1.3]"
