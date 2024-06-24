@@ -122,7 +122,7 @@ export default function Upload({userData}) {
   }
 
   return (
-    <div className="h-screen w-screen flex justify-center items-center fixed top-0"
+    <div className="h-full w-full flex justify-center items-center min-h-[600px] min-w-[600px] absolute top-0 bottom-0 left-0 right-0"
     id="uploadPopUpOverlay"
     onClick={uploadPopUpOverlayClicked}>
       <div className="flex flex-col items-center bg-white rounded-lg min-h-[350px] px-[30px] py-[10px]">

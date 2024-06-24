@@ -113,11 +113,11 @@ export default function Watch() {
     }
 
     return (
-        <div className="home h-screen w-screen flex flex-col min-w-[600px]"
+        <div className="home h-screen w-screen flex flex-col min-h-[600px] min-w-[600px]"
         onClick={backgroundClicked}>
             <div className="navBar min-h-[75px] max-h-[75px] w-full flex flex-row justify-center items-center">
                 <div className="homeDiv w-[20%] flex justify-center font-[550]">
-                    <button className="uploadButton text-white bg-green-700 hover:bg-green-600 font-medium rounded-lg text-[18px] px-5 py-2.5 hover:scale-[1.04] active:scale-[1]"
+                    <button className="uploadButton text-white bg-green-700 hover:bg-green-600 font-medium rounded-lg text-[18px] mr-[10px] px-5 py-2.5 hover:scale-[1.04] active:scale-[1]"
                     onClick={uploadButtonClicked}>
                         Upload
                     </button>
@@ -129,14 +129,14 @@ export default function Watch() {
                     </input>
                     <div className="searchButton flex justify-center w-[60px] rounded-[4px] ml-[5px] hover:cursor-pointer border-black border-[1px]"
                         id="searchButton" onClick={searchButtonClicked}>
-                        <i className="fa-solid fa-magnifying-glass fa-xl h-[30px] w-[30px] mt-[7px] pt-[12px] pl-[2px]">
+                        <i className="fa-solid fa-magnifying-glass fa-xl h-[30px] w-[30px] mt-[7px] pt-[12px] pl-[3px]">
                         </i>
                     </div>
                 </div>
                 {
                     data == null ?
                     <div className="w-[20%] flex justify-center">
-                        <a className="signInLink text-[20px] underline underline-offset-4 hover:scale-[1.05] hover:cursor-pointer active:scale-[1]"
+                        <a className="signInLink ml-[10px] text-[20px] underline underline-offset-4 hover:scale-[1.05] hover:cursor-pointer active:scale-[1]"
                         onClick={signInClicked}>
                             Sign in
                         </a>

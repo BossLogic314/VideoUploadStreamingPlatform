@@ -13,7 +13,7 @@ export default function VideoInformation() {
     }
 
     return (
-        <div className="videoInformationOverlay h-screen w-screen flex flex-col items-center pt-[50px] fixed top-0"
+        <div className="videoInformationOverlay h-screen w-screen min-h-[600px] min-w-[600px] flex flex-col items-center pt-[50px] absolute top-0 bottom-0 left-0 right-0"
         id="videoInformationOverlay" onClick={videoInformationOverlayClicked}>
             <div className="videoInformation bg-white rounded-lg max-w-[60%] px-[30px] py-[10px]" id="videoInformation">
                 <div className="title text-[33px] font-[500] text-center overflow-x-auto overflow-y-hidden whitespace-nowrap"

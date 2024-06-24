@@ -40,7 +40,7 @@ export default function Upload({videoKeyToDelete, setShowDeleteVideoWarning}) {
     }
 
     return (
-        <div className="h-screen w-screen flex flex-col items-center fixed top-0" id="deleteVideoWarningOverlay"
+        <div className="h-screen w-screen min-h-[600px] min-w-[600px] flex flex-col items-center absolute top-0 bottom-0 left-0 right-0" id="deleteVideoWarningOverlay"
         onClick={deleteVideoWarningOverlayClicked}>
             <div className="deleteVideoWarning flex flex-col justify-center rounded-lg max-w-[60%] mt-[50px] px-[30px] pt-[10px] pb-[14px]" id="deleteVideoWarning">
                 <div className="deleteVideoWarningText text-[25px] font-[500] text-center" id="deleteVideoWarningText">
