@@ -112,6 +112,12 @@ export default function Watch() {
         setVideoInformation({newShowVideoInformationValue: true, newTitle: title, newDescription: description, newAuthor: author});
     }
 
+    const keyPressedOnSearchBox = (event) => {
+        if (event.key == 'Enter') {
+            document.getElementById('searchButton').click();
+        }
+    }
+
     return (
         <div className="home h-screen w-screen flex flex-col min-h-[600px] min-w-[600px]"
         onClick={backgroundClicked}>
@@ -123,9 +129,8 @@ export default function Watch() {
                     </button>
                 </div>
                 <div className="searchDiv w-[50%] flex flex-row">
-                    <input className="searchBox h-[45px] flex-1 rounded-[4px] px-[10px] text-[20px] border-black border-[1px]"
-                    id="searchBox"
-                        type="text" placeholder="Search here">
+                    <input className="searchBox h-[45px] flex-1 rounded-[4px] px-[10px] text-[20px] border-black border-[1px]" id="searchBox"
+                        type="text" placeholder="Search here" onKeyDown={keyPressedOnSearchBox}>
                     </input>
                     <div className="searchButton flex justify-center w-[60px] rounded-[4px] ml-[5px] hover:cursor-pointer border-black border-[1px]"
                         id="searchButton" onClick={searchButtonClicked}>
