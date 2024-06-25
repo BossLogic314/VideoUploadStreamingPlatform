@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import axios from "axios";
 import ReactPlayer from 'react-player';
+import { useSearchStore } from "../../../zustand/useSearchStore";
+import { useVideosStore } from "../../../zustand/useVideosStore";
+import { useShowMessagesStore } from "../../../zustand/useShowMessagesStore";
 import { useUploadPopUpStore } from "../../../zustand/useUploadPopUpStore";
 import { useLoaderStore } from "../../../zustand/useLoaderStore";
 import { useVideoInformationStore } from "../../../zustand/useVideoInformationStore";
@@ -17,16 +20,34 @@ import './styles/Watch.css';
 export default function Watch() {
 
     const {data, status} = useSession();
-    const [videos, setVideos] = useState();
+    const {searchString, setSearchString} = useSearchStore();
+    const {videos, setVideos} = useVideosStore();
     const [userSignedIn, setUserSignedIn] = useState(false);
     const {showUploadPopUp, setShowUploadPopUp} = useUploadPopUpStore();
     const {showLoader} = useLoaderStore();
     const {showVideoInformation, setVideoInformation} = useVideoInformationStore();
     const [showProfileInformation, setShowProfileInformation] = useState(false);
-    const [showTrySearchingMessage, setShowTrySearchingMessage] = useState(true);
-    const [showNoMatchesFoundMessage, setShowNoMatchesFoundMessage] = useState(false);
+    const {showTrySearchingMessage, setShowTrySearchingMessage,
+            showNoMatchesFoundMessage, setShowNoMatchesFoundMessage} = useShowMessagesStore();
     const [showDeleteVideoWarning, setShowDeleteVideoWarning] = useState(false);
     const [videoKeyToDelete, setVideoKeyToDelete] = useState(null);
+
+    useEffect(() => {
+        if (videos.length != 0) {
+            setShowTrySearchingMessage(false);
+            setShowNoMatchesFoundMessage(false);
+        }
+        else {
+            if (searchString == '') {
+                setShowTrySearchingMessage(true);
+                setShowNoMatchesFoundMessage(false);
+            }
+            else {
+                setShowTrySearchingMessage(false);
+                setShowNoMatchesFoundMessage(true);
+            }
+        }
+    }, [videos]);
 
     useEffect(() => {
         const script = document.createElement("script");
@@ -53,27 +74,13 @@ export default function Watch() {
 
     const searchButtonClicked = async() => {
 
-        const searchString = document.getElementById('searchBox').value;
         if (searchString == '') {
             return;
         }
 
-        // Not showing this message anymore
-        setShowTrySearchingMessage(false);
-
         try {
             const response = await axios.get(`http://localhost:8083/watch/getVideos?searchString=${searchString}`);
             const videos = response.data.response.body.hits.hits;
-
-            // If no videos are returned
-            if (videos.length == 0) {
-                setShowNoMatchesFoundMessage(true);
-                setVideos([]);
-                return;
-            }
-
-            // When at least 1 video is returned
-            setShowNoMatchesFoundMessage(false);
             setVideos(videos);
         }
         catch(error) {
@@ -118,6 +125,7 @@ export default function Watch() {
         }
     }
 
+    console.log(videos);
     return (
         <div className="home h-screen w-screen flex flex-col min-h-[600px] min-w-[600px]"
         onClick={backgroundClicked}>
@@ -130,7 +138,8 @@ export default function Watch() {
                 </div>
                 <div className="searchDiv w-[50%] flex flex-row">
                     <input className="searchBox h-[45px] flex-1 rounded-[4px] px-[10px] text-[20px] border-black border-[1px]" id="searchBox"
-                        type="text" placeholder="Search here" onKeyDown={keyPressedOnSearchBox}>
+                        type="text" placeholder="Search here" onKeyDown={keyPressedOnSearchBox} value={searchString}
+                        onChange={(e) => {setSearchString(e.target.value)}}>
                     </input>
                     <div className="searchButton flex justify-center w-[60px] rounded-[4px] ml-[5px] hover:cursor-pointer border-black border-[1px]"
                         id="searchButton" onClick={searchButtonClicked}>
