@@ -5,7 +5,7 @@
 .loader {
     border: 16px solid;
     border-radius: 50%;
-    border-top: 16px solid #dee1f1;
+    border-top: 16px solid white;
     width: 120px;
     height: 120px;
     -webkit-animation: spin 2s linear infinite; /* Safari */
@@ -13,7 +13,7 @@
 }
 
 #waitMessage, #uploadingMessage {
-    color: #dee1f1;
+    color: white;
 }
   
 /* Safari */
