@@ -125,7 +125,6 @@ export default function Watch() {
         }
     }
 
-    console.log(videos);
     return (
         <div className="home h-screen w-screen flex flex-col min-h-[600px] min-w-[600px]"
         onClick={backgroundClicked}>
