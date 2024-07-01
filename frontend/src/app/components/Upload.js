@@ -18,7 +18,7 @@ export default function Upload({userData}) {
     // Showing the 'loading' message to the user
     setShowLoader(true);
     try {
-      const response = await axios.post('http://localhost:8082/upload/createMultipartUpload',
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_UPLOAD_SERVICE_URL}/upload/createMultipartUpload`,
       {
         filename: filename
       });
@@ -44,7 +44,7 @@ export default function Upload({userData}) {
       formData.append('chunkIndex', i + 1);
 
       try {
-        const response = await axios.post('http://localhost:8082/upload/uploadChunk', formData);
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_UPLOAD_SERVICE_URL}/upload/uploadChunk`, formData);
         const eTag = response.data.eTag;
         uploadedParts.push({PartNumber: i + 1, ETag: eTag});
       }
@@ -58,7 +58,7 @@ export default function Upload({userData}) {
 
   let completeMultipartUpload = (async(filename, uploadId, uploadedParts) => {
     try {
-      const response = await axios.post('http://localhost:8082/upload/completeMultipartUpload',
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_UPLOAD_SERVICE_URL}/upload/completeMultipartUpload`,
       {
         filename: filename,
         uploadId: uploadId,

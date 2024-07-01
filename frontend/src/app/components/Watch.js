@@ -79,7 +79,7 @@ export default function Watch() {
         }
 
         try {
-            const response = await axios.get(`http://localhost:8083/watch/getVideos?searchString=${searchString}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_WATCH_SERVICE_URL}/watch/getVideos?searchString=${searchString}`);
             const videos = response.data.response.body.hits.hits;
             setVideos(videos);
         }
