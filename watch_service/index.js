@@ -5,7 +5,7 @@ import watchRouter from './routes/watch.js';
 import { connectToOpenSearchService } from './opensearch/connect.js';
 
 const app = express();
-const PORT = 8083;
+const PORT = 3103;
 
 dotenv.config();
 

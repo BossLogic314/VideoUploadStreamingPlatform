@@ -10,7 +10,7 @@ dotenv.config();
 connectToOpenSearchService();
 
 const app = express();
-const PORT = 8082;
+const PORT = 3102;
 
 app.use(express.json());
 app.use(cors({
